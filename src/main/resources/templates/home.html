@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Home</title>
+
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+    
+</head>
+
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+
+    <div class="container-fluid">
+        <h2 th:text="'Hello ' + ${#httpServletRequest.remoteUser} + ' !'">Login as</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Tambah User Baru
+                    </div>
+                    <div class="card-body">
+                    	<form th:action="@{/user/addUser}" method="post">
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">User Name:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="text" name="username"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">Password:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="password" name="password" 
+                    			 pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="Password harus mengandung angka dan huruf serta minimal memiliki 8 karakter"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">Role:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="text" name="role"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<button type="submit" class="btn btn-primary">Simpan</button>
+                    		</div>
+                    	</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Update Password
+                    </div>
+                    <div class="card-body">
+                    	<h3 th:text=${updateResponse}></h3>
+                    	<form th:action="@{/user/changePassword}" method="post">
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">Password Lama:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="password" id="oldpass" name="oldpassword"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">Password Baru:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="password" id="pass" name="password"
+        						 pattern="(?=.*\d)(?=.*[a-zA-Z]).{8,}" title="Password harus mengandung angka dan huruf serta minimal memiliki 8 karakter"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<label class="col-sm-4">Konfirmasi Password Baru:</label>
+                    			<input class="col-sm-8 form-control input-sm" required type="password" id="passConfirm" name="passConfirm"/>
+                    		</div>
+                    		<div class="row form-group">
+                    			<button type="submit" class="btn btn-primary">Simpan</button>
+                    		</div>
+                    	</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    
+    <script>
+		var password = document.getElementById("pass"), 
+		confirm_password = document.getElementById("passConfirm");
+	
+	  	function validatePassword(){
+		    if(password.value != confirm_password.value) {
+		      confirm_password.setCustomValidity("Passwords Mismatch");
+		    } else {
+		      confirm_password.setCustomValidity('');
+		    }
+	 	}
+	
+		password.onchange = validatePassword;
+		confirm_password.onkeyup = validatePassword;
+    </script>
+</body>
+</html>
